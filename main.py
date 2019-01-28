@@ -35,15 +35,19 @@ class  hillcipher22():
 	cipherarray = []
 	calcarray = []
 	inkey = []
+	mult26 = [2, 13, 26]
 
 	def convertKey(self):
 		for i in range(len(self.key)):
 			self.key[i] = alphanum.get(self.key[i])
 
-	def inverseKey(self): # inkey = d^-1 * adj(key)
+	def inverseKey(self, key): # inkey = d^-1 * adj(key)
 		# Finding d^-1
-		d = (self.key[0] * self.key[3]) - (self.key[1] * self.key[2])
+		d = (key[0] * key[3]) - (key[1] * key[2])
 		# d * d^-1 = 1 % 26
+		for i in range(len(self.mult26)):
+			if d % self.mult26[i] == 0:
+				return "ERR"
 		if d < 0:
 			d *= -1
 			for i in range(1, 26):
@@ -56,7 +60,7 @@ class  hillcipher22():
 				if (d * i) % 26 == 1:
 					ind = i
 					break
-		adjkey = [self.key[3], (-1 * self.key[1]), (-1 * self.key[2]), self.key[0]]
+		adjkey = [key[3], (-1 * key[1]), (-1 * key[2]), key[0]]
 		for i in range(len(adjkey)):
 			self.inkey.append(ind * adjkey[i])
 		# inkey % 26
@@ -112,7 +116,7 @@ class  hillcipher22():
 		return self.ciphertext
 
 	def decrypt(self, ciphertext):
-		self.inverseKey() # Calculates the inverse of the key
+		self.inverseKey(self.key) # Calculates the inverse of the key
 		# Ciphertext to Array of Numbers
 		ciphertext = ciphertext.replace(" ","")
 		ciphertext = ciphertext.upper()
