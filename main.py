@@ -141,4 +141,4 @@ class  hillcipher22():
 		# Returns the final Plaintext
 		return self.plaintext
 
-hill22 = hillcipher22()
+	
